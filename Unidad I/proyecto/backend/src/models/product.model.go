@@ -10,21 +10,8 @@ type ProductModel struct {
 }
 
 func (productModel ProductModel) GetProducts() (products []entities.Product, err error) {
-	q := `SELECT
-			p.ProductID,
-			p.ProductName,
-			s.CompanyName,
-			c.CategoryName,
-			p.UnitPrice,
-			p.UnitsInStock
-		FROM Products p
-		INNER JOIN Suppliers s
-		ON p.SupplierID = s.SupplierID
-		INNER JOIN Categories c 
-		ON p.CategoryID = c.CategoryID
-		WHERE p.Discontinued = 0
-	`
-	rows, err := productModel.Db.Query(q)
+
+	rows, err := productModel.Db.Query("SELECT * FROM vista_productos_descontinuados")
 
 	if err != nil {
 		return nil, err
@@ -60,13 +47,8 @@ func (productModel ProductModel) GetProducts() (products []entities.Product, err
 }
 
 func (productModel ProductModel) SearchProduct(keyword string) (products []entities.Product, err error) {
-	rows, err := productModel.Db.Query("SELECT p.ProductID, p.ProductName, s.CompanyName, c.CategoryName, p.UnitPrice, p.UnitsInStock "+
-		"FROM Products p "+
-		"INNER JOIN Suppliers s "+
-		"ON p.SupplierID = s.SupplierID "+
-		"INNER JOIN Categories c "+
-		"ON p.CategoryID = c.CategoryID "+
-		"WHERE p.ProductName LIKE ?", "%"+keyword+"%")
+	rows, err := productModel.Db.Query("SELECT * FROM vista_productos_descontinuados "+
+		"WHERE ProductName LIKE ?", "%"+keyword+"%")
 
 	if err != nil {
 		return nil, err
@@ -98,5 +80,16 @@ func (productModel ProductModel) SearchProduct(keyword string) (products []entit
 			}
 		}
 		return products, nil
+	}
+}
+
+func (productModel ProductModel) UpdateProduct(product *entities.Product) (int64, error) {
+	result, err := productModel.Db.Exec("UPDATE Products SET UnitPrice = ?, UnitsInStock = ? WHERE ProductID = ?",
+		product.UnitPrice, product.UnitsInStock, product.ProductID)
+
+	if err != nil {
+		return 0, err
+	} else {
+		return result.RowsAffected()
 	}
 }
