@@ -2,15 +2,21 @@
 <hr>
 
 <div class="row g-3 mt-4">
-  <div class="col">
-    <input type="text" class="form-control" placeholder="Producto" aria-label="Producto">
-  </div>
-  <div class="col">
-    <button type="button" class="btn btn-primary">Buscar</button>
+  <div class="col d-flex justify-content-center">
+    <input #keyword type="text" class="form-control" placeholder="Producto" aria-label="Producto"
+      (keyup)="productFilter(keyword.value)" style="width: 70%;">
   </div>
 </div>
+<div class="row g-3 mt-2">
+  <div class="col d-flex justify-content-evenly">
+    <button type="button" class="btn btn-primary" (click)="prevPage()"><span aria-hidden="true">&laquo;</span></button>
+    <button type="button" class="btn btn-primary" (click)="nextPage()"
+      [disabled]="(products | page:page).length === 0"><span aria-hidden="true">&raquo;</span></button>
+  </div>
 
-<table class="table mt-4">
+</div>
+
+<table class="table table-bordered mt-4">
   <thead>
     <tr>
       <th scope="col">ID</th>
@@ -23,14 +29,54 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let p of products">
-      <th scope="row">{{ p.ProductID }}</th>
-      <td>{{ p.ProductName }}</td>
-      <td>{{ p.CompanyName }}</td>
-      <td>{{ p.CategoryName }}</td>
-      <td>{{ p.UnitPrice }}</td>
-      <td>{{ p.UnitsInStock }}</td>
-      <td class=""><i class="fa-solid fa-pen-to-square d-flex justify-content-center"></i></td>
+    <tr *ngFor="let p of products | page:page">
+      <th scope="row" class="small">{{ p.ProductID }}</th>
+      <td class="name">{{ p.ProductName }}</td>
+      <td class="name">{{ p.CompanyName }}</td>
+      <td id="small">{{ p.CategoryName }}</td>
+      <td class="small">{{ p.UnitPrice }}</td>
+      <td class="small">{{ p.UnitsInStock }}</td>
+      <td class="small"><a (click)="productDetails(p.ProductID, p.UnitPrice, p.UnitsInStock)" data-bs-toggle="modal" data-bs-target="#actualizarModal"><i
+            class="fa-solid fa-pen-to-square d-flex justify-content-center"></i></a>
+      </td>
     </tr>
   </tbody>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="actualizarModal" tabindex="-1" aria-labelledby="actualizarModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="actualizarModalLabel">Actualizar Datos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row mb-3">
+            <label for="id" class="col-sm-2 col-form-label">ID</label>
+            <div class="col-sm-10">
+              <input #id type="number" class="form-control" id="id" [value]="product.ProductID" disabled>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <label for="price" class="col-sm-2 col-form-label">Precio</label>
+            <span class="input-group-text">$</span>
+            <input #price type="number" [value]="product.UnitPrice" class="form-control" aria-label="Amount (to the nearest dollar)" id="price">
+          </div>
+          <div class="row mb-3">
+            <label for="stock" class="col-sm-2 col-form-label">Stock</label>
+            <div class="col-sm-10">
+              <input #stock type="number" class="form-control" id="stock" [value]="product.UnitsInStock">
+            </div>
+          </div>
+        </form>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="updateProduct(price.value, stock.value)">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>

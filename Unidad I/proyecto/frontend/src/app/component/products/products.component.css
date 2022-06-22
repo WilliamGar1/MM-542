@@ -1,0 +1,21 @@
+th{
+    text-align: center;
+}
+
+td{
+    text-align: center;
+    vertical-align: middle;
+    padding: 5px;
+}
+
+.small {
+    width: 40px;
+}
+
+#small {
+    width: 150px;
+}
+
+.name {
+    width: 250px;
+}
