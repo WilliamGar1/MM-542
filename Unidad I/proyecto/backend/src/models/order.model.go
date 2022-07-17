@@ -19,7 +19,7 @@ func (orderModel OrderModel) GetOrders() (orders []entities.Order, err error) {
 		var orders []entities.Order
 
 		for rows.Next() {
-			var OrderID int
+			var OrderID int64
 			var CustomerID string
 			var EmployeeID int
 			var OrderDate string
@@ -60,5 +60,20 @@ func (orderModel OrderModel) GetOrders() (orders []entities.Order, err error) {
 			}
 		}
 		return orders, nil
+	}
+}
+
+func (orderModel OrderModel) NewOrder(order *entities.Order) (int64, error) {
+	result, err := orderModel.Db.Exec("INSERT INTO Orders values(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+		order.CustomerID, order.EmployeeID, order.OrderDate, order.RequiredDate, order.ShippedDate,
+		order.ShipVia, order.Freight, order.ShipName, order.ShipAddress, order.ShipCity, order.ShipRegion,
+		order.ShipPostalCode, order.ShipCountry)
+
+	if err != nil {
+		return 0, err
+	} else {
+		order.OrderID, _ = result.LastInsertId()
+		rowsAffected, _ := result.RowsAffected()
+		return rowsAffected, nil
 	}
 }

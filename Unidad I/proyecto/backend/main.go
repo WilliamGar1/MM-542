@@ -21,6 +21,7 @@ func main() {
 	r.HandleFunc("/updateProduct/{id}", routers.UpdateProduct).Methods("PUT")
 
 	r.HandleFunc("/orders", routers.GetOrders).Methods("GET")
+	r.HandleFunc("/newOrder", routers.NewOrder).Methods("POST")
 
 	corsH := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
 	corsM := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"})

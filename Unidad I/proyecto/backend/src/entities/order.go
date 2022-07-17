@@ -1,7 +1,7 @@
 package entities
 
 type Order struct {
-	OrderID        int     `json:"OrderID"`
+	OrderID        int64   `json:"OrderID"`
 	CustomerID     string  `json:"CustomerID"`
 	EmployeeID     int     `json:"EmployeeID"`
 	OrderDate      string  `json:"OrderDate"`
