@@ -8,6 +8,7 @@ import { ProductsComponent } from './component/products/products.component';
 import { PagePipe } from './page.pipe';
 import { OrdersComponent } from './component/orders/orders.component';
 import { NavbarComponent } from './component/navbar/navbar.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { NavbarComponent } from './component/navbar/navbar.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

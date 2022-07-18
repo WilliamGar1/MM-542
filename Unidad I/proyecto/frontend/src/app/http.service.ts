@@ -37,4 +37,24 @@ export class HttpService {
       )
   }
 
+  public newOrder( body: any): Observable<any>{
+    return this.http.post(this.URL + '/newOrder', body);
+  }
+
+  public newOrderDetail( body: any ): Observable<any> {
+    return this.http.post(this.URL + '/newOrderDetail', body);
+  }
+
+  public getCustomers(): Observable<any> {
+    return this.http.get(this.URL + '/customers');
+  }
+
+  public getEmployees(): Observable<any> {
+    return this.http.get(this.URL + '/employees')
+  }
+
+  public getShippers(): Observable<any> {
+    return this.http.get(this.URL + '/shippers')
+  }
+
 }
