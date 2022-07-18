@@ -16,3 +16,26 @@ type Order struct {
 	ShipPostalCode any     `json:"ShipPostalCode"`
 	ShipCountry    string  `json:"ShipCountry"`
 }
+
+type OrderDetail struct {
+	OrderID   int64   `json:"OrderID"`
+	ProductID int64   `json:"ProductID"`
+	UnitPrice float64 `json:"UnitPrice"`
+	Quantity  int     `json:"Quantity"`
+	Discount  float64 `json:"Discount"`
+}
+
+type Customer struct {
+	CustomerID  string `json:"CustomerID"`
+	ContactName string `json:"ContactName"`
+}
+
+type Employee struct {
+	EmployeeID int    `json:"EmployeeID"`
+	FullName   string `json:"FullName"`
+}
+
+type Shipper struct {
+	ShipperID   int    `json:"ShipperID"`
+	CompanyName string `json:"CompanyName"`
+}

@@ -19,9 +19,16 @@ func main() {
 	r.HandleFunc("/prod/{l}", routers.FilterProducts).Methods("GET")
 	r.HandleFunc("/prod/", routers.FilterProducts).Methods("GET")
 	r.HandleFunc("/updateProduct/{id}", routers.UpdateProduct).Methods("PUT")
+	r.HandleFunc("/updateProductStock/{id}", routers.UpdateProductStock).Methods("PUT")
 
 	r.HandleFunc("/orders", routers.GetOrders).Methods("GET")
+	r.HandleFunc("/orderID", routers.GetOrderID).Methods("GET")
 	r.HandleFunc("/newOrder", routers.NewOrder).Methods("POST")
+	r.HandleFunc("/newOrderDetail", routers.NewOrderDetail).Methods("POST")
+
+	r.HandleFunc("/customers", routers.GetCustomers).Methods("GET")
+	r.HandleFunc("/employees", routers.GetEmployees).Methods("GET")
+	r.HandleFunc("/shippers", routers.GetShippers).Methods("GET")
 
 	corsH := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
 	corsM := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"})

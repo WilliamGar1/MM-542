@@ -93,3 +93,14 @@ func (productModel ProductModel) UpdateProduct(product *entities.Product) (int64
 		return result.RowsAffected()
 	}
 }
+
+func (productModel ProductModel) UpdateProductStock(product *entities.Product) (int64, error) {
+	result, err := productModel.Db.Exec("UPDATE Products SET UnitsInStock = ? WHERE ProductID = ?",
+		product.UnitsInStock, product.ProductID)
+
+	if err != nil {
+		return 0, err
+	} else {
+		return result.RowsAffected()
+	}
+}

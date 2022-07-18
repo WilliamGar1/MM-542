@@ -77,3 +77,32 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("rowsAffected: ", rowsAffected)
 	}
 }
+
+func UpdateProductStock(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+
+	if err != nil {
+		fmt.Fprintf(w, "Please enter valid data")
+	}
+
+	productModel := models.ProductModel{
+		Db: db,
+	}
+
+	var t entities.Product
+
+	json.Unmarshal(reqBody, &t)
+
+	product := entities.Product{
+		ProductID:    t.ProductID,
+		UnitsInStock: t.UnitsInStock,
+	}
+
+	rowsAffected, err2 := productModel.UpdateProductStock(&product)
+
+	if err2 != nil {
+		fmt.Println(err2)
+	} else {
+		fmt.Println("rowsAffected: ", rowsAffected)
+	}
+}
